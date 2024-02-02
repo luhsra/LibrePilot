@@ -32,6 +32,8 @@
 
 #include <openpilot.h>
 
+#include "time_markers.h"
+
 #include "taskinfo.h"
 
 #include <stdbool.h>
@@ -77,7 +79,11 @@ static bool bridge_enabled = false;
  * \return 0 on success
  */
 
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t comUsbBridgeStart(void)
+#else
 static int32_t comUsbBridgeStart(void)
+#endif
 {
     if (bridge_enabled) {
         // Start tasks
@@ -95,7 +101,11 @@ static int32_t comUsbBridgeStart(void)
  * \return -1 if initialisation failed
  * \return 0 on success
  */
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t comUsbBridgeInitialize(void)
+#else
 static int32_t comUsbBridgeInitialize(void)
+#endif
 {
     // TODO: Get from settings object
     usart_port = PIOS_COM_BRIDGE;
@@ -140,6 +150,8 @@ MODULE_INITCALL(comUsbBridgeInitialize, comUsbBridgeStart);
 
 static void com2UsbBridgeTask(__attribute__((unused)) void *parameters)
 {
+    STORE_INLINE_TIME_MARKER(task_started_com2usb);
+
     /* Handle usart -> vcp direction */
     volatile uint32_t tx_errors = 0;
 
@@ -159,6 +171,8 @@ static void com2UsbBridgeTask(__attribute__((unused)) void *parameters)
 
 static void usb2ComBridgeTask(__attribute__((unused)) void *parameters)
 {
+    STORE_INLINE_TIME_MARKER(task_started_com2usb);
+
     /* Handle vcp -> usart direction */
     volatile uint32_t tx_errors = 0;
 

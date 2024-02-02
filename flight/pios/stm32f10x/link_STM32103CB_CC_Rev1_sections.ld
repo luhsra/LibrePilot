@@ -40,7 +40,30 @@ SECTIONS
         KEEP(*(.initcallsettings.init))
 	. = ALIGN(4);
 	__settings_initcall_end   = .;
+  . = ALIGN(4);
     } >FLASH
+
+  .preinit_array     :
+  {
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+    KEEP (*(.preinit_array*))
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+  } >FLASH
+  .init_array :
+  {
+    PROVIDE_HIDDEN (__init_array_start = .);
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array*))
+    PROVIDE_HIDDEN (__init_array_end = .);
+  } >FLASH
+  .fini_array :
+  {
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array*))
+    PROVIDE_HIDDEN (__fini_array_end = .);
+  } >FLASH
+
 
     .ARM.extab :
     {
@@ -51,6 +74,15 @@ SECTIONS
     {
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
     } > FLASH
+
+.sparse.compressed.rle2 :
+{
+  _ssparsespec2 = .;
+  KEEP(*(.sparse.compressed.rle2*))
+  . = ALIGN(4);
+  _esparsespec2 = .;
+} >FLASH =0xab
+
 
     . = ALIGN(4);
     _etext = .;
@@ -76,10 +108,20 @@ SECTIONS
     .data : AT (_etext)
     {
         _sdata = .;
+        __start_time_markers = .;
+         *(.data.__time_markers*);
+        __end_time_markers = .;
         *(.data .data.*)
         . = ALIGN(4);
         _edata = . ;
     } > SRAM
+
+.sparse.plain.rle (NOLOAD):
+{
+  . = ALIGN(4);
+  *(.sparse.plain.rle2*)
+  . = ALIGN(4);
+} >SRAM
 
 
 
@@ -117,6 +159,16 @@ SECTIONS
      */
 
     PROVIDE ( _end = _ebss ) ;
+
+	/* boardinfo, usually in bootloader but we don't use the bootloader. 
+	 *  Hence, it needs to be included here */
+    .boardinfo :
+    {
+        . = ALIGN(4);
+        KEEP(*(.boardinfo))
+        . = ALIGN(ORIGIN(BD_INFO)+LENGTH(BD_INFO));
+    } > BD_INFO
+
 
     /* Stabs debugging sections.  */
     .stab          0 : { *(.stab) }

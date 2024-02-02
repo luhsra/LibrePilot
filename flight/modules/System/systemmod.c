@@ -40,8 +40,12 @@
  */
 
 #include <openpilot.h>
+
+#include "time_markers.h"
+
 // private includes
 #include "inc/systemmod.h"
+#include "time_markers.h"
 
 #include <notification.h>
 #ifdef PIOS_INCLUDE_WS2811
@@ -105,6 +109,7 @@ static enum { STACKOVERFLOW_NONE = 0, STACKOVERFLOW_WARNING = 1, STACKOVERFLOW_C
 static bool mallocFailed;
 static HwSettingsData bootHwSettings;
 static FrameType_t bootFrameType;
+TIME_MARKER(done_taskCreate);
 
 volatile int initTaskDone = 0;
 
@@ -190,6 +195,8 @@ MODULE_INITCALL(SystemModInitialize, 0);
  */
 static void systemTask(__attribute__((unused)) void *parameters)
 {
+    STORE_INLINE_TIME_MARKER(task_started_receiver);
+
     /* calibrate the cpu usage monitor */
     PIOS_TASK_MONITOR_CalibrateIdleCounter();
     /* board driver init */
@@ -212,6 +219,8 @@ static void systemTask(__attribute__((unused)) void *parameters)
     /* start the delayed callback scheduler */
     PIOS_CALLBACKSCHEDULER_Start();
 
+	STORE_TIME_MARKER(done_taskCreate);
+	print_startup_statistics();
     // Register task
     PIOS_TASK_MONITOR_RegisterTask(TASKINFO_RUNNING_SYSTEM, systemTaskHandle);
 
@@ -783,9 +792,12 @@ void vApplicationStackOverflowHook(__attribute__((unused)) xTaskHandle *pxTask,
  * Called by the RTOS when a malloc call fails.
  */
 #define DEBUG_MALLOC_FAILURES 0
+void HAL_PWR_StopQEMU(uint32_t status);
 void vApplicationMallocFailedHook(void)
 {
     mallocFailed = true;
+    __asm volatile("bkpt 1");
+    /* HAL_PWR_StopQEMU(0x4eab); */
 #if DEBUG_MALLOC_FAILURES
     static volatile bool wait_here = true;
     while (wait_here) {

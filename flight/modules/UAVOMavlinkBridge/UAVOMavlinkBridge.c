@@ -36,6 +36,8 @@
 
 // ****************
 #include "openpilot.h"
+
+#include "time_markers.h"
 #include "stabilizationdesired.h"
 #include "flightbatterysettings.h"
 #include "flightbatterystate.h"
@@ -131,7 +133,11 @@ static void updateSettings();
  * \return -1 if initialisation failed
  * \return 0 on success
  */
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t uavoMavlinkBridgeStart(void)
+#else
 static int32_t uavoMavlinkBridgeStart(void)
+#endif
 {
     if (module_enabled) {
         // Start tasks
@@ -147,7 +153,11 @@ static int32_t uavoMavlinkBridgeStart(void)
  * \return -1 if initialisation failed
  * \return 0 on success
  */
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t uavoMavlinkBridgeInitialize(void)
+#else
 static int32_t uavoMavlinkBridgeInitialize(void)
+#endif
 {
     if (PIOS_COM_MAVLINK) {
         updateSettings();
@@ -559,6 +569,8 @@ static void mavlink_send_extra2()
 
 static void uavoMavlinkBridgeTask(__attribute__((unused)) void *parameters)
 {
+    STORE_INLINE_TIME_MARKER(task_started_mavlink);
+
     uint32_t lastSysTime;
 
     // Main task loop

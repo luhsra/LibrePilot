@@ -35,6 +35,8 @@
  */
 
 #include "openpilot.h"
+
+#include "time_markers.h"
 #include "receiverstatus.h"
 #include "hwsettings.h"
 #include "flightmodesettings.h"
@@ -263,7 +265,11 @@ struct msp_bridge {
 
 static bool module_enabled = false;
 static struct msp_bridge *msp;
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t uavoMSPBridgeInitialize(void);
+#else
 static int32_t uavoMSPBridgeInitialize(void);
+#endif
 static void uavoMSPBridgeTask(void *parameters);
 
 static void msp_send(struct msp_bridge *m, uint8_t cmd, const uint8_t *data, size_t len)
@@ -1006,7 +1012,11 @@ static bool msp_receive_byte(struct msp_bridge *m, uint8_t b)
  * Module start routine automatically called after initialization routine
  * @return 0 when was successful
  */
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t uavoMSPBridgeStart(void)
+#else
 static int32_t uavoMSPBridgeStart(void)
+#endif
 {
     if (!module_enabled) {
         // give port to telemetry if it doesn't have one
@@ -1058,7 +1068,11 @@ static uint32_t hwsettings_mspspeed_enum_to_baud(uint8_t baud)
  * Module initialization routine
  * @return 0 when initialization was successful
  */
+#ifdef ARA_MOCK_UNROLL_MODINIT
+int32_t uavoMSPBridgeInitialize(void)
+#else
 static int32_t uavoMSPBridgeInitialize(void)
+#endif
 {
     if (pios_com_msp_id) {
         msp = pios_malloc(sizeof(*msp));
@@ -1127,6 +1141,8 @@ MODULE_INITCALL(uavoMSPBridgeInitialize, uavoMSPBridgeStart);
  */
 static void uavoMSPBridgeTask(__attribute__((unused)) void *parameters)
 {
+    STORE_INLINE_TIME_MARKER(task_started_uavomsbridge);
+
     while (1) {
         uint8_t b = 0;
         uint16_t count = PIOS_COM_ReceiveBuffer(msp->com, &b, 1, ~0);

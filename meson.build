@@ -3,6 +3,8 @@ project('librepilot', 'cpp',
                        'cpp_std=c++17',
                        'buildtype=debugoptimized'])
 
+fs = import('fs')
+
 toolchains = subproject('toolchains')
 arm_enabled = toolchains.get_variable('arm_enabled')
 assert(arm_enabled, 'The GPSLogger can only be build with an ARM toolchain.')
@@ -192,3 +194,5 @@ librepilot_mock_application = custom_target('librepilot_mock_app.ll',
 
 translation_map = files('function_pointer_translation_map.json')
 instance_corrections = files('instance_corrections.json')
+
+freertos_config = fs.copyfile(freertos_proj.get_variable('default_config'), 'FreeRTOSConfig.h')

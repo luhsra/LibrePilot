@@ -20,6 +20,8 @@ clang_flags = libplatforms.get_variable('clang_flags')
 arm_clang_flags = libplatforms.get_variable('arm_clang_flags')
 arm_ld_flags = libplatforms.get_variable('arm_ld_flags')
 
+arm_include_path = toolchains.get_variable('arm_include_path')
+
 freertos_proj = subproject('freertos')
 freertos_includes = []
 foreach dir : freertos_proj.get_variable('header_dirs') + freertos_proj.get_variable('arm_header_dirs')
@@ -133,6 +135,7 @@ librepilot_includes = [
   '-I', here / 'flight/modules/FirmwareIAP/inc',
   '-I', here / 'flight/modules/Telemetry/inc',
   '-I', here / 'flight/modules/System/inc',
+  '-I', arm_include_path,
 ] + freertos_includes + libsra_includes
 
 librepilot_ldflags = [

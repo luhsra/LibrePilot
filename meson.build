@@ -196,17 +196,7 @@ librepilot_mock_application = custom_target('librepilot_mock_app.ll',
                                             command: llvm_link_cmd)
 
 
-if meson.version().version_compare('>=1.4.0')
-  error('Actually, translation_map should be a file object, so the path is always correct.')
-  error('The problem, however, is that file objects cannot be used as input in targets in')
-  error('other subprojects, what we need for Parrot. Naturally, one would circumwent this')
-  error('by using translation_map.full_path() within the super project. However, this')
-  error('function does not exist pre Meson 1.4.0. TL;DR make a file object out of the')
-  error('translation_map in Meson 1.4.0 and not this path hack that it is by now.')
-  error('Additionally, the translation_map.json position within the file system is crucial')
-  error('for ARA, since paths within that file are resolved relative to the file location.')
-endif
-translation_map = meson.current_source_dir() / 'function_pointer_translation_map.json'
+translation_map = files('function_pointer_translation_map.json')[0]
 
 instance_corrections = files('instance_corrections.json')
 

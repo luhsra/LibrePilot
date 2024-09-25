@@ -201,3 +201,5 @@ translation_map = files('function_pointer_translation_map.json')[0]
 instance_corrections = files('instance_corrections.json')
 
 freertos_config = fs.copyfile(freertos_proj.get_variable('default_config'), 'FreeRTOSConfig.h')
+
+cloc_app = [here / 'flight', here / 'firmware']

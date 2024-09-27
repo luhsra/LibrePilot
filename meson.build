@@ -49,6 +49,7 @@ librepilot_cflags = [
   '-fdata-sections',
   '-Wshadow',
   '-ffunction-sections',
+  '-fshort-enums',
   # '-std=gnu99',
   '-Wunsuffixed-float-constants',
   '-DUSE_INPUT_LPF',
@@ -97,6 +98,10 @@ librepilot_cflags = [
   '-DconfigINCLUDE_ALL_DECLS=1',
 ]
 
+librepilot_opt_flags = [
+  '--inline-threshold=2'
+]
+
 here = meson.current_source_dir()
 librepilot_includes = [
   '-I', here / 'flight/pios/common/libraries/FreeRTOS//Source/include',
@@ -108,7 +113,6 @@ librepilot_includes = [
   '-I', here / 'flight/pios/common/libraries/FreeRTOS//Source/portable/GCC/ARM_CM3',
   '-I', here / 'flight/pios',
   '-I', here / 'flight/pios/inc',
-  '-I', here / 'flight/targets/boards/coptercontrol/firmware/..',
   '-I', here / 'flight/targets/boards/coptercontrol',
   '-I', here / 'flight/libraries/inc',
   '-I', here / 'flight/pios/common',
@@ -140,8 +144,6 @@ librepilot_includes = [
 
 librepilot_ldflags = [
   '--specs=nano.specs',
-  '-T' + here / 'flight/pios/stm32f10x//link_STM32103CB_CC_Rev1_memory.ld',
-  '-T' + here /'flight/pios/stm32f10x//link_STM32103CB_CC_Rev1_sections.ld',
   # '-Wl,--fatal-warnings',
   '-Wl,--sort-common',
   '-Wl,--sort-section=alignment',
@@ -152,6 +154,15 @@ librepilot_ldflags = [
   '-nostartfiles',
   '-Os',
 ]
+
+librepilot_linkerscripts = files(
+  'flight/pios/stm32f10x//link_STM32103CB_CC_Rev1_memory.ld',
+  'flight/pios/stm32f10x//link_STM32103CB_CC_Rev1_sections.ld',
+)
+
+librepilot_asm_files = files(
+  'flight/pios/stm32f10x/startup_stm32f10x_MD_CC.S',
+)
 
 librepilot_compile = generator(clang,
                                output: '@BASENAME@.ll',
@@ -200,6 +211,6 @@ translation_map = files('function_pointer_translation_map.json')[0]
 
 instance_corrections = files('instance_corrections.json')
 
-freertos_config = fs.copyfile(freertos_proj.get_variable('default_config'), 'FreeRTOSConfig.h')
+freertos_config = files('flight/targets/boards/coptercontrol/firmware/inc/FreeRTOSConfig.h')[0]
 
 cloc_app = [here / 'flight', here / 'firmware']

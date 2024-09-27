@@ -197,16 +197,16 @@ Stack_Change:
 /* Switches stack back momentarily to MSP */
   movs r0, #0
   msr control, r0
-Heap_Reclaim:
-/* add heap_post_rtos to the heap (if the capability/function exist) */
-/* Also claim the unused memory (between end of heap to end of memory */
-/* CAREFULL: the heap section must be the last section in RAM in order this to work */
-  ldr r0, = _init_stack_size
-  ldr r1, = _eheap_post_rtos
-  ldr r2, = _eram
-  subs r2, r2, r1
-  adds r0, r0, r2
-  bl xPortIncreaseHeapSize
+# Heap_Reclaim:
+# /* add heap_post_rtos to the heap (if the capability/function exist) */
+# /* Also claim the unused memory (between end of heap to end of memory */
+# /* CAREFULL: the heap section must be the last section in RAM in order this to work */
+#   ldr r0, = _init_stack_size
+#   ldr r1, = _eheap_post_rtos
+#   ldr r2, = _eram
+#   subs r2, r2, r1
+#   adds r0, r0, r2
+#   bl xPortIncreaseHeapSize
   bx r4
   .size  Stack_Change, .-Stack_Change
 
@@ -317,263 +317,320 @@ g_pfnVectors:
 
   .weak  NMI_Handler
 NMI_Handler_l:
-	b NMI_Handler_l
+        movs r1, #97
+        bl SerialPut
 .thumb_set NMI_Handler, NMI_Handler_l
 
 //  .weak  HardFault_Handler
 //HardFault_Handler_l:
-// 	b HardFault_Handler_l
+        movs r1, #98
+        bl SerialPut
 //.thumb_set HardFault_Handler, HardFault_Handler_l
 
   .weak  MemManage_Handler
 MemManage_Handler_l:
-	b MemManage_Handler_l
+        movs r1, #99
+        bl SerialPut
 .thumb_set MemManage_Handler, MemManage_Handler_l
 
   .weak  BusFault_Handler
 BusFault_Handler_l:
-	b BusFault_Handler_l
+        movs r1, #100
+        bl SerialPut
 .thumb_set BusFault_Handler, BusFault_Handler_l
 
   .weak  UsageFault_Handler
 UsageFault_Handler_l:
-	b UsageFault_Handler_l
+        movs r1, #101
+        bl SerialPut
 .thumb_set UsageFault_Handler, UsageFault_Handler_l
 
   .weak  SVC_Handler
 SVC_Handler_l:
-	b SVC_Handler_l
+        movs r1, #102
+        bl SerialPut
 .thumb_set SVC_Handler, SVC_Handler_l
 
   .weak  DebugMon_Handler
 DebugMon_Handler_l:
-	b DebugMon_Handler_l
+        movs r1, #103
+        bl SerialPut
 .thumb_set DebugMon_Handler, DebugMon_Handler_l
 
   .weak  PendSV_Handler
 PendSV_Handler_l:
-	b PendSV_Handler_l
+        movs r1, #104
+        bl SerialPut
 .thumb_set PendSV_Handler, PendSV_Handler_l
 
   .weak  SysTick_Handler
 SysTick_Handler_l:
-	b SysTick_Handler_l
+        movs r1, #105
+        bl SerialPut
 .thumb_set SysTick_Handler, SysTick_Handler_l
 
   .weak  WWDG_IRQHandler
 WWDG_IRQHandler_l:
-	b WWDG_IRQHandler_l
+        movs r1, #106
+        bl SerialPut
 .thumb_set WWDG_IRQHandler, WWDG_IRQHandler_l
 
   .weak  PVD_IRQHandler
 PVD_IRQHandler_l:
-	b PVD_IRQHandler_l
+        movs r1, #107
+        bl SerialPut
 .thumb_set PVD_IRQHandler, PVD_IRQHandler_l
 
   .weak  TAMPER_IRQHandler
 TAMPER_IRQHandler_l:
-	b TAMPER_IRQHandler_l
+        movs r1, #108
+        bl SerialPut
 .thumb_set TAMPER_IRQHandler, TAMPER_IRQHandler_l
 
   .weak  RTC_IRQHandler
 RTC_IRQHandler_l:
-	b RTC_IRQHandler_l
+        movs r1, #109
+        bl SerialPut
 .thumb_set RTC_IRQHandler, RTC_IRQHandler_l
 
   .weak  FLASH_IRQHandler
 FLASH_IRQHandler_l:
-	b FLASH_IRQHandler_l
+        movs r1, #110
+        bl SerialPut
 .thumb_set FLASH_IRQHandler, FLASH_IRQHandler_l
 
   .weak  RCC_IRQHandler
 RCC_IRQHandler_l:
-	b RCC_IRQHandler_l
+        movs r1, #110
+        bl SerialPut
 .thumb_set RCC_IRQHandler, RCC_IRQHandler_l
 
   .weak  EXTI0_IRQHandler
 EXTI0_IRQHandler_l:
-	b EXTI0_IRQHandler_l
+        movs r1, #111
+        bl SerialPut
 .thumb_set EXTI0_IRQHandler, EXTI0_IRQHandler_l
 
   .weak  EXTI1_IRQHandler
 EXTI1_IRQHandler_l:
-	b EXTI1_IRQHandler_l
+        movs r1, #112
+        bl SerialPut
 .thumb_set EXTI1_IRQHandler, EXTI1_IRQHandler_l
 
   .weak  EXTI2_IRQHandler
 EXTI2_IRQHandler_l:
-	b EXTI2_IRQHandler_l
+        movs r1, #113
+        bl SerialPut
 .thumb_set EXTI2_IRQHandler, EXTI2_IRQHandler_l
 
   .weak  EXTI3_IRQHandler
 EXTI3_IRQHandler_l:
-	b EXTI3_IRQHandler_l
+        movs r1, #114
+        bl SerialPut
 .thumb_set EXTI3_IRQHandler, EXTI3_IRQHandler_l
 
   .weak  EXTI4_IRQHandler
 EXTI4_IRQHandler_l:
-	b EXTI4_IRQHandler_l
+        movs r1, #115
+        bl SerialPut
 .thumb_set EXTI4_IRQHandler, EXTI4_IRQHandler_l
 
   .weak  DMA1_Channel1_IRQHandler
 DMA1_Channel1_IRQHandler_l:
-	b DMA1_Channel1_IRQHandler_l
+        movs r1, #116
+        bl SerialPut
 .thumb_set DMA1_Channel1_IRQHandler, DMA1_Channel1_IRQHandler_l
 
   .weak  DMA1_Channel2_IRQHandler
 DMA1_Channel2_IRQHandler_l:
-	b DMA1_Channel2_IRQHandler_l
+        movs r1, #117
+        bl SerialPut
 .thumb_set DMA1_Channel2_IRQHandler, DMA1_Channel2_IRQHandler_l
 
   .weak  DMA1_Channel3_IRQHandler
 DMA1_Channel3_IRQHandler_l:
-	b DMA1_Channel3_IRQHandler_l
+        movs r1, #118
+        bl SerialPut
 .thumb_set DMA1_Channel3_IRQHandler, DMA1_Channel3_IRQHandler_l
 
   .weak  DMA1_Channel4_IRQHandler
 DMA1_Channel4_IRQHandler_l:
-	b DMA1_Channel4_IRQHandler_l
+        movs r1, #119
+        bl SerialPut
 .thumb_set DMA1_Channel4_IRQHandler, DMA1_Channel4_IRQHandler_l
 
   .weak  DMA1_Channel5_IRQHandler
 DMA1_Channel5_IRQHandler_l:
-	b DMA1_Channel5_IRQHandler_l
+        movs r1, #120
+        bl SerialPut
 .thumb_set DMA1_Channel5_IRQHandler, DMA1_Channel5_IRQHandler_l
 
   .weak  DMA1_Channel6_IRQHandler
 DMA1_Channel6_IRQHandler_l:
-	b DMA1_Channel6_IRQHandler_l
+        movs r1, #121
+        bl SerialPut
 .thumb_set DMA1_Channel6_IRQHandler, DMA1_Channel6_IRQHandler_l
 
   .weak  DMA1_Channel7_IRQHandler
 DMA1_Channel7_IRQHandler_l:
-	b DMA1_Channel7_IRQHandler_l
+        movs r1, #122
+        bl SerialPut
 .thumb_set DMA1_Channel7_IRQHandler, DMA1_Channel7_IRQHandler_l
 
   .weak  ADC1_2_IRQHandler
 ADC1_2_IRQHandler_l:
-	b ADC1_2_IRQHandler_l
+        movs r1, #123
+        bl SerialPut
 .thumb_set ADC1_2_IRQHandler, ADC1_2_IRQHandler_l
 
   .weak  USB_HP_CAN1_TX_IRQHandler
 USB_HP_CAN1_TX_IRQHandler_l:
-	b USB_HP_CAN1_TX_IRQHandler_l
+        movs r1, #124
+        bl SerialPut
 .thumb_set USB_HP_CAN1_TX_IRQHandler, USB_HP_CAN1_TX_IRQHandler_l
 
   .weak  USB_LP_CAN1_RX0_IRQHandler
 USB_LP_CAN1_RX0_IRQHandler_l:
-	b USB_LP_CAN1_RX0_IRQHandler_l
+        movs r1, #125
+        bl SerialPut
 .thumb_set USB_LP_CAN1_RX0_IRQHandler, USB_LP_CAN1_RX0_IRQHandler_l
 
   .weak  CAN1_RX1_IRQHandler
 CAN1_RX1_IRQHandler_l:
-	b CAN1_RX1_IRQHandler_l
+        movs r1, #126
+        bl SerialPut
 .thumb_set CAN1_RX1_IRQHandler, CAN1_RX1_IRQHandler_l
 
   .weak  CAN1_SCE_IRQHandler
 CAN1_SCE_IRQHandler_l:
-	b CAN1_SCE_IRQHandler_l
+        movs r1, #127
+        bl SerialPut
 .thumb_set CAN1_SCE_IRQHandler, CAN1_SCE_IRQHandler_l
 
   .weak  EXTI9_5_IRQHandler
 EXTI9_5_IRQHandler_l:
-	b EXTI9_5_IRQHandler_l
+        movs r1, #128
+        bl SerialPut
 .thumb_set EXTI9_5_IRQHandler, EXTI9_5_IRQHandler_l
 
   .weak  TIM1_BRK_IRQHandler
 TIM1_BRK_IRQHandler_l:
-	b TIM1_BRK_IRQHandler_l
+        movs r1, #129
+        bl SerialPut
 .thumb_set TIM1_BRK_IRQHandler, TIM1_BRK_IRQHandler_l
 
   .weak  TIM1_UP_IRQHandler
 TIM1_UP_IRQHandler_l:
-	b TIM1_UP_IRQHandler_l
+        movs r1, #130
+        bl SerialPut
 .thumb_set TIM1_UP_IRQHandler, TIM1_UP_IRQHandler_l
 
   .weak  TIM1_TRG_COM_IRQHandler
 TIM1_TRG_COM_IRQHandler_l:
-	b TIM1_TRG_COM_IRQHandler_l
+        movs r1, #131
+        bl SerialPut
 .thumb_set TIM1_TRG_COM_IRQHandler, TIM1_TRG_COM_IRQHandler_l
 
   .weak  TIM1_CC_IRQHandler
 TIM1_CC_IRQHandler_l:
-	b TIM1_CC_IRQHandler_l
+        movs r1, #132
+        bl SerialPut
 .thumb_set TIM1_CC_IRQHandler, TIM1_CC_IRQHandler_l
 
   .weak  TIM2_IRQHandler
 TIM2_IRQHandler_l:
-	b TIM2_IRQHandler_l
+        movs r1, #133
+        bl SerialPut
 .thumb_set TIM2_IRQHandler, TIM2_IRQHandler_l
 
   .weak  TIM3_IRQHandler
 TIM3_IRQHandler_l:
-	b TIM3_IRQHandler_l
+        movs r1, #134
+        bl SerialPut
 .thumb_set TIM3_IRQHandler, TIM3_IRQHandler_l
 
   .weak  TIM4_IRQHandler
 TIM4_IRQHandler_l:
-	b TIM4_IRQHandler_l
+        movs r1, #135
+        bl SerialPut
 .thumb_set TIM4_IRQHandler, TIM4_IRQHandler_l
 
   .weak  I2C1_EV_IRQHandler
 I2C1_EV_IRQHandler_l:
-	b I2C1_EV_IRQHandler_l
+        movs r1, #136
+        bl SerialPut
 .thumb_set I2C1_EV_IRQHandler, I2C1_EV_IRQHandler_l
 
   .weak  I2C1_ER_IRQHandler
 I2C1_ER_IRQHandler_l:
-	b I2C1_ER_IRQHandler_l
+        movs r1, #137
+        bl SerialPut
 .thumb_set I2C1_ER_IRQHandler, I2C1_ER_IRQHandler_l
 
   .weak  I2C2_EV_IRQHandler
 I2C2_EV_IRQHandler_l:
-	b I2C2_EV_IRQHandler_l
+        movs r1, #138
+        bl SerialPut
 .thumb_set I2C2_EV_IRQHandler, I2C2_EV_IRQHandler_l
 
   .weak  I2C2_ER_IRQHandler
 I2C2_ER_IRQHandler_l:
-	b I2C2_ER_IRQHandler_l
+        movs r1, #139
+        bl SerialPut
 .thumb_set I2C2_ER_IRQHandler, I2C2_ER_IRQHandler_l
 
   .weak  SPI1_IRQHandler
 SPI1_IRQHandler_l:
-	b SPI1_IRQHandler_l
+        movs r1, #140
+        bl SerialPut
 .thumb_set SPI1_IRQHandler, SPI1_IRQHandler_l
 
   .weak  SPI2_IRQHandler
 SPI2_IRQHandler_l:
-	b SPI2_IRQHandler_l
+        movs r1, #141
+        bl SerialPut
 .thumb_set SPI2_IRQHandler, SPI2_IRQHandler_l
 
   .weak  USART1_IRQHandler
 USART1_IRQHandler_l:
-	b USART1_IRQHandler_l
+        movs r1, #142
+        bl SerialPut
 .thumb_set USART1_IRQHandler, USART1_IRQHandler_l
 
   .weak  USART2_IRQHandler
 USART2_IRQHandler_l:
-	b USART2_IRQHandler_l
+        movs r1, #143
+        bl SerialPut
 .thumb_set USART2_IRQHandler, USART2_IRQHandler_l
 
   .weak  USART3_IRQHandler
 USART3_IRQHandler_l:
-	b USART3_IRQHandler_l
+        movs r1, #144
+        bl SerialPut
 .thumb_set USART3_IRQHandler, USART3_IRQHandler_l
 
   .weak  EXTI15_10_IRQHandler
 EXTI15_10_IRQHandler_l:
-	b EXTI15_10_IRQHandler_l
+        movs r1, #145
+        bl SerialPut
 .thumb_set EXTI15_10_IRQHandler, EXTI15_10_IRQHandler_l
 
   .weak  RTCAlarm_IRQHandler
 RTCAlarm_IRQHandler_l:
-	b RTCAlarm_IRQHandler_l
+        movs r1, #146
+        bl SerialPut
 .thumb_set RTCAlarm_IRQHandler, RTCAlarm_IRQHandler_l
 
   .weak  USBWakeUp_IRQHandler
 USBWakeUp_IRQHandler_l:
-	b USBWakeUp_IRQHandler_l
+        movs r1, #147
+        bl SerialPut
 .thumb_set USBWakeUp_IRQHandler, USBWakeUp_IRQHandler_l
+
+SerialPut:
+        bl _ZN6Serial7putcharEc 
+CatchAll:
+        b CatchAll
 
   .size  Default_Handler_all, .-Default_Handler_all
 

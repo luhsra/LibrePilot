@@ -30,7 +30,7 @@
 #define configTICK_RATE_HZ                           ((portTickType)1000)
 #define configMAX_PRIORITIES                         5
 #define configMINIMAL_STACK_SIZE                     ((unsigned short)48)
-#define configTOTAL_HEAP_SIZE                        ((size_t)(55 * 256))
+#define configTOTAL_HEAP_SIZE                        ((size_t)(53 * 256))
 #define configMAX_TASK_NAME_LEN                      (6)
 #define configUSE_TRACE_FACILITY                     0
 #define configUSE_16_BIT_TICKS                       0
@@ -40,6 +40,7 @@
 #define configUSE_COUNTING_SEMAPHORES                0
 #define configUSE_ALTERNATIVE_API                    0
 #define configQUEUE_REGISTRY_SIZE                    0
+#define configSUPPORT_STATIC_ALLOCATION 1
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                        0
@@ -75,8 +76,8 @@
 #endif
 
 /* Enable run time stats collection */
-#define configGENERATE_RUN_TIME_STATS  1
-#define INCLUDE_uxTaskGetRunTime       1
+#define configGENERATE_RUN_TIME_STATS  0
+#define INCLUDE_uxTaskGetRunTime       0
 #define INCLUDE_xTaskGetIdleTaskHandle 1
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() \
     do { \

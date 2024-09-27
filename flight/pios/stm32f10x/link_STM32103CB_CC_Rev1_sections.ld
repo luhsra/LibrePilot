@@ -1,3 +1,6 @@
+/* Entry Point */
+ENTRY(Reset_Handler)
+
 /* This is the size of the stack for all FreeRTOS IRQs */
 _irq_stack_size = 0x240;
 /* This is the size of the stack for early init: life span is until scheduler starts */
@@ -95,7 +98,7 @@ SECTIONS
      * against the lowest address in RAM so that a stack overrun results in a hard fault
      * at the first access beyond the end of the stack.
      */
-    .irq_stack :
+    .irq_stack (NOLOAD):
     {
          . = ALIGN(4);
          _irq_stack_end = . ;
@@ -166,7 +169,7 @@ SECTIONS
     {
         . = ALIGN(4);
         KEEP(*(.boardinfo))
-        . = ALIGN(ORIGIN(BD_INFO)+LENGTH(BD_INFO));
+        /* . = ALIGN(ORIGIN(BD_INFO)+LENGTH(BD_INFO)); */
     } > BD_INFO
 
 

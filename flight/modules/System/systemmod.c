@@ -178,6 +178,7 @@ int32_t SystemModInitialize(void)
 #endif
 
 #ifdef PIOS_INCLUDE_INSTRUMENTATION
+    #error
     InstrumentationInit();
 #endif
 

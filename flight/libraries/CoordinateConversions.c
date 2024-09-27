@@ -126,6 +126,7 @@ void RneFromLLA(const int32_t LLAi[3], float Rne[3][3])
 // ****** find roll, pitch, yaw from quaternion ********
 void Quaternion2RPY(const float q[4], float rpy[3])
 {
+    return; // this function does not contain a syscall, so deactivate it to save space. It does not fit otherwise.
     float R13, R11, R12, R23, R33;
     float q0s = q[0] * q[0];
     float q1s = q[1] * q[1];
@@ -148,6 +149,7 @@ void Quaternion2RPY(const float q[4], float rpy[3])
 // ****** find quaternion from roll, pitch, yaw ********
 void RPY2Quaternion(const float rpy[3], float q[4])
 {
+    return; // this function does not contain a syscall, so deactivate it to save space. It does not fit otherwise.
     float phi, theta, psi;
     float cphi, sphi, ctheta, stheta, cpsi, spsi;
 
@@ -177,6 +179,7 @@ void RPY2Quaternion(const float rpy[3], float q[4])
 // ** Find Rbe, that rotates a vector from earth fixed to body frame, from quaternion **
 void Quaternion2R(float q[4], float Rbe[3][3])
 {
+    return; // this function does not contain a syscall, so deactivate it to save space. It does not fit otherwise.
     const float q0s = q[0] * q[0], q1s = q[1] * q[1], q2s = q[2] * q[2], q3s = q[3] * q[3];
 
     Rbe[0][0] = q0s + q1s - q2s - q3s;
